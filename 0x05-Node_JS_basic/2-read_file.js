@@ -39,4 +39,33 @@ function countStudents(fileName) {
         } else {
           students[field[3]] = [field[0]];
         }
- 
+        
+        // Increment the count for the student's field
+        if (Object.prototype.hasOwnProperty.call(fields, field[3])) {
+          fields[field[3]] += 1;
+        } else {
+          fields[field[3]] = 1;
+        }
+      }
+    }
+    
+    // Subtract 1 to account for the header row in the CSV file
+    const l = length - 1;
+    
+    // Log the total number of students (excluding the header)
+    console.log(`Number of students: ${l}`);
+    
+    // Log the number of students and the list of their names for each field
+    for (const [key, value] of Object.entries(fields)) {
+      if (key !== 'field') {  // Skip the header row
+        console.log(`Number of students in ${key}: ${value}. List: ${students[key].join(', ')}`);
+      }
+    }
+  } catch (error) {
+    // Handle any errors that occur during file reading
+    throw Error('Cannot load the database');
+  }
+}
+
+// Export the countStudents function for use in other modules
+module.exports = countStudents;
